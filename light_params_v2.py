@@ -95,7 +95,7 @@ for idx in np.arange(len(result)):
               interpolation=interp)
 
 '''
-A,B,C,D,E,F,G = result[0]
+A,B,C,D,E,F,G = result[idx]
 lo = D**2/B/C/4
 s_x = (1/B/2/(1-lo**2))**0.5
 s_y = (1/C/2/(1-lo**2))**0.5
