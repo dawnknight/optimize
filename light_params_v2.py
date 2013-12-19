@@ -56,7 +56,7 @@ def light_params(im,pts):
         datapts  = np.vstack((x,y)).T
         data = im_cut[datapts[:,1],datapts[:,0]]
         
-        x0 = [1000.,-8e-5,-8e-5,-0.02,20,16,16] #initial
+        x0 = [1000.,8e-5,8e-5,-0.02,20,16,16] #initial
         k = optimize.fmin_powell(chisq,x0,args=[data,x,y])        
 
         niter=10
