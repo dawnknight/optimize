@@ -51,7 +51,7 @@ def Gaussian_difference(mtx,im_cut):
          ) + E
     IG = sum((M-E).flatten())    
      
-    return im_cut-M,IG   
+    return im_cut-M,IG        # IG = intergrated gaussian value
 
 def light_params(im,pts):
     params = [];
