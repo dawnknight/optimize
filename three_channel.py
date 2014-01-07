@@ -52,7 +52,7 @@ def Gaussian_difference(mtx,im_cut):
 def light_params(im,pts):
     params = [];
     for idx in np.arange(len(pts)):
-        im_cut = im_ori[pts[idx][1]:pts[idx][1]+31,pts[idx][0]:pts[idx][0]+31]
+        im_cut = im[pts[idx][1]:pts[idx][1]+31,pts[idx][0]:pts[idx][0]+31]
         h,w  = im_cut.shape
         y,x  = np.where(im_cut<=250)
         datapts  = np.vstack((x,y)).T
@@ -92,7 +92,7 @@ cmap = 'gist_heat'
 interp = 'nearest'
 clim = [-255,255]
 
-for idx in np.arange(len(result)): 
+for idx in np.arange(len(result_R)): 
    im_cut_R = im_R[pts[idx][1]:pts[idx][1]+30,pts[idx][0]:pts[idx][0]+30]
    diff_R = Gaussian_difference(result_R[idx],im_cut_R) 
    im_cut_G = im_G[pts[idx][1]:pts[idx][1]+30,pts[idx][0]:pts[idx][0]+30]
