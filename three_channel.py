@@ -17,11 +17,16 @@ def chisq(x,*args):
     C = x[2] # C = 1/(2*(1-lo^2)*sigma_y^2)    C>0 
     D = x[3] # D = -lo/((1-lo^2)*sigma_x*sigma_y)   lo>0 => D<0 , lo<0 => D>0
     E = x[4]
+    #print A,B,C,D,E,x[5],x[6]    
     
     if A<255.:
-        return 1e12 
+        return 1e12
+    if B<0 or C<0:
+        return 1e12
     if x[5]<0 or x[5]>31:
-        return 1e12    
+        return 1e12
+    if x[6]<0 or x[6]>31:
+        return 1e12        
         
     M = A * np.exp(
         -B*(args[1]-x[5])**2 - 
@@ -76,9 +81,9 @@ def light_params(im,pts):
     
     
 pts = [ [1260,1605],[1305,1670],[1680,1750],[1980,1580],[2510,1535],\
-        [2505,1245],[2500,1115],[2695,1040],[3200,1350],[3615,1540]\
+        [2505,1237],[2500,1115],[2690,1035],[3200,1350],[3615,1540]\
       ]
-
+#pts = [[2505,1237]]
 im = np.array(Image.open('aug_22_2013-09-16-122136-207688.jpg')).astype(np.float)
 im_R =im[0:,0:,0]
 im_G =im[0:,0:,1]
@@ -92,12 +97,12 @@ cmap = 'gist_heat'
 interp = 'nearest'
 clim = [-255,255]
 
-for idx in np.arange(len(result_R)): 
-   im_cut_R = im_R[pts[idx][1]:pts[idx][1]+30,pts[idx][0]:pts[idx][0]+30]
+for idx in np.arange(len(result_G)): 
+   im_cut_R = im_R[pts[idx][1]:pts[idx][1]+31,pts[idx][0]:pts[idx][0]+31]
    diff_R = Gaussian_difference(result_R[idx],im_cut_R) 
-   im_cut_G = im_G[pts[idx][1]:pts[idx][1]+30,pts[idx][0]:pts[idx][0]+30]
+   im_cut_G = im_G[pts[idx][1]:pts[idx][1]+31,pts[idx][0]:pts[idx][0]+31]
    diff_G = Gaussian_difference(result_G[idx],im_cut_G) 
-   im_cut_B = im_B[pts[idx][1]:pts[idx][1]+30,pts[idx][0]:pts[idx][0]+30]
+   im_cut_B = im_B[pts[idx][1]:pts[idx][1]+31,pts[idx][0]:pts[idx][0]+31]
    diff_B = Gaussian_difference(result_B[idx],im_cut_B) 
    
    figure(1),   
@@ -105,7 +110,7 @@ for idx in np.arange(len(result_R)):
       suptitle('R')
    plt.subplot(10,1,idx+1)           
    plt.imshow(diff_R, extent=(0,1,0,1), clim=clim, cmap=cmap,\
-                  interpolation=interp)
+                 interpolation=interp)
    figure(2),               
    if idx==0:
       suptitle('G')
