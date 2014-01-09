@@ -105,7 +105,7 @@ def image_processing_G(img_idx):
     imG = im_ori[0:,0:,1]
     resultG = light_params(imG,pts)
     for idx in np.arange(len(pts)): 
-       value_R = Gaussian_intergate(resultG[idx]) 
+       value_G = Gaussian_intergate(resultG[idx]) 
        v_mtx_G.append(value_G/31/31)        
     return v_mtx_G
     
@@ -127,17 +127,20 @@ path = 'C:/Users/atc327/Desktop/images_ggd/'
 img_dir = glob.glob( os.path.join(path, '*.jpg') )
 
 if __name__ == '__main__':         
+    
+    pool = Pool(processes=24)
+    
     ing_G = [] 
     ing_G_R = []
     ing_G_G = []
-    ing_G_B = []
-    pool = Pool(processes=24)              
+    ing_G_B = []       
+     
     ing_G.append(pool.map(image_processing,range(len(img_dir))))     
     ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
     ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
     ing_G_B.append(pool.map(image_processing_B,range(len(img_dir))))
            
-     #plot 
+
      
     ing_G = ing_G[0]
     ing_G = np.transpose(ing_G)    
@@ -145,10 +148,11 @@ if __name__ == '__main__':
     ing_G_R = ing_G_R[0]
     ing_G_G = ing_G_G[0]
     ing_G_B = ing_G_B[0]
+    
     ing_G_R = np.transpose(ing_G_R)
     ing_G_G = np.transpose(ing_G_G)
     ing_G_B = np.transpose(ing_G_B)
-    
+#    
     for i in arange(len(pts)):
         figure(1),
         plot(arange(len(img_dir)),ing_G[i])
