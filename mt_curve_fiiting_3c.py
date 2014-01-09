@@ -89,7 +89,37 @@ def image_processing(img_idx):
        v_mtx.append(value/31/31)        
     return v_mtx
 
+def image_processing_R(img_idx):
+    v_mtx_R = []
+    im_ori = np.array(Image.open(img_dir[img_idx])).astype(np.float)
+    imR = im_ori[0:,0:,0]
+    resultR = light_params(imR,pts)
+    for idx in np.arange(len(pts)): 
+       value_R = Gaussian_intergate(resultR[idx]) 
+       v_mtx_R.append(value_R/31/31)        
+    return v_mtx_R
 
+def image_processing_G(img_idx):
+    v_mtx_G = []
+    im_ori = np.array(Image.open(img_dir[img_idx])).astype(np.float)
+    imG = im_ori[0:,0:,1]
+    resultG = light_params(imG,pts)
+    for idx in np.arange(len(pts)): 
+       value_R = Gaussian_intergate(resultG[idx]) 
+       v_mtx_G.append(value_G/31/31)        
+    return v_mtx_G
+    
+def image_processing_B(img_idx):
+    v_mtx_B = []
+    im_ori = np.array(Image.open(img_dir[img_idx])).astype(np.float)
+    imB = im_ori[0:,0:,2]
+    resultB = light_params(imB,pts)
+    for idx in np.arange(len(pts)): 
+       value_B = Gaussian_intergate(resultB[idx]) 
+       v_mtx_B.append(value_B/31/31)        
+    return v_mtx_B
+    
+    
 pts = [ [1260,1605],[1305,1670],[1680,1750],[1980,1580],[2510,1535],\
             [2505,1237],[2500,1115],[2695,1040],[3200,1350],[3615,1540]\
           ]  
@@ -97,18 +127,45 @@ path = 'C:/Users/atc327/Desktop/images_ggd/'
 img_dir = glob.glob( os.path.join(path, '*.jpg') )
 
 if __name__ == '__main__':         
-    ing_G = []
+    ing_G = [] 
+    ing_G_R = []
+    ing_G_G = []
+    ing_G_B = []
     pool = Pool(processes=24)              
-    ing_G.append(pool.map(image_processing,range(len(img_dir)))) 
+    ing_G.append(pool.map(image_processing,range(len(img_dir))))     
+    ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
+    ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
+    ing_G_B.append(pool.map(image_processing_B,range(len(img_dir))))
            
+     #plot 
+     
     ing_G = ing_G[0]
-    ing_G = np.transpose(ing_G)
+    ing_G = np.transpose(ing_G)    
+    
+    ing_G_R = ing_G_R[0]
+    ing_G_G = ing_G_G[0]
+    ing_G_B = ing_G_B[0]
+    ing_G_R = np.transpose(ing_G_R)
+    ing_G_G = np.transpose(ing_G_G)
+    ing_G_B = np.transpose(ing_G_B)
+    
     for i in arange(len(pts)):
+        figure(1),
         plot(arange(len(img_dir)),ing_G[i])
-        
-        
-        
-        
-        
-        
-        
+        figure(2),
+        plot(arange(len(img_dir)),ing_G_R[i])
+        figure(3),
+        plot(arange(len(img_dir)),ing_G_G[i])
+        figure(4),
+        plot(arange(len(img_dir)),ing_G_B[i])
+    
+    figure(1), 
+    title('gray scale') 
+    figure(2), 
+    title('R domain')  
+    figure(3), 
+    title('G domain')  
+    figure(4), 
+    title('B domain')  
+    
+    
