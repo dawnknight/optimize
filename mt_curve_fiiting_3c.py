@@ -65,19 +65,25 @@ def light_params(im,pts):
         data = im_cut[datapts[:,1],datapts[:,0]]
         
         x0 = [1000.,8e-5,8e-5,-0.02,20,16,16] #initial
-        k = optimize.fmin_powell(chisq,x0,args=[data,x,y])        
-
+        args=[data,x,y] 
+        k = optimize.fmin_powell(chisq,x0,args)        
+        min_fval = chisq(list(k),*args)
+        min_fval_params =k
+        
         niter=10
         seed=314
         np.random.seed(seed)        
-        sol = np.array(k)        
+        #sol = np.array(k)        
 
         for i in np.arange(niter):
             x0 = k*(0.6*np.random.rand()+0.7)
             k = optimize.fmin_powell(chisq,x0,args=[data,x,y])
-            sol = np.vstack([sol,k])              
-        amp,B,C,D,E,ctr_x,ctr_y = k
-        params.append(k)
+            if min_fval > chisq(list(k),*args):    
+               min_fval = chisq(list(k),*args)         
+               min_fval_params =k
+            #sol = np.vstack([sol,k])              
+        #amp,B,C,D,E,ctr_x,ctr_y = k
+        params.append(min_fval_params)
     return params
 
 def image_processing(img_idx):
@@ -128,7 +134,7 @@ img_dir = glob.glob( os.path.join(path, '*.jpg') )
 
 if __name__ == '__main__':         
     
-    pool = Pool(processes=24)
+    pool = Pool(processes=20)
     
     ing_G = [] 
     ing_G_R = []
