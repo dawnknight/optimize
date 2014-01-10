@@ -97,7 +97,7 @@ for infile in glob.glob( os.path.join(path, '*.jpg') ):
     clim = [-255,255]
     figure(1+num),
     for idx in np.arange(len(pts)): 
-       im_cut = im_ori[pts[idx][1]:pts[idx][1]+30,pts[idx][0]:pts[idx][0]+30]
+       im_cut = im_ori[pts[idx][1]:pts[idx][1]+31,pts[idx][0]:pts[idx][0]+31]
 #       mask = (im_cut<250)*1
        diff,value = Gaussian_difference(result[idx],im_cut) 
        print idx,value/31/31
