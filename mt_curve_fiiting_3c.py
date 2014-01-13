@@ -64,7 +64,7 @@ def light_params(im,pts):
         datapts  = np.vstack((x,y)).T
         data = im_cut[datapts[:,1],datapts[:,0]]
         
-        x0 = [1000.,8e-5,8e-5,-0.02,20,16,16] #initial
+        x0 = [1000.,0.02,0.02,0,20,16,16] #initial
         args=[data,x,y] 
         k = optimize.fmin_powell(chisq,x0,args)        
         min_fval = chisq(list(k),*args)
@@ -72,17 +72,14 @@ def light_params(im,pts):
         
         niter=3
         seed=314
-        np.random.seed(seed)        
-        #sol = np.array(k)        
-
+        np.random.seed(seed)              
+        
         for i in np.arange(niter):
             x0 = k*(0.6*np.random.rand()+0.7)
             k = optimize.fmin_powell(chisq,x0,args=[data,x,y])
             if min_fval > chisq(list(k),*args):    
                min_fval = chisq(list(k),*args)         
                min_fval_params =k
-            #sol = np.vstack([sol,k])              
-        #amp,B,C,D,E,ctr_x,ctr_y = k
         params.append(min_fval_params)
     return params
 
@@ -127,9 +124,9 @@ def image_processing_B(img_idx):
     
     
 pts = [ [1260,1605],[1305,1670],[1680,1750],[1980,1580],[2510,1535],\
-            [2505,1237],[2500,1115],[2695,1040],[3200,1350],[3615,1540]\
+        [2505,1237],[2500,1115],[2690,1035],[3200,1350],[3615,1540]\
           ]  
-          
+      
 
 path = 'C:/Users/atc327/Desktop/images_ggd/'
 img_dir = glob.glob( os.path.join(path, '*.jpg') )
@@ -150,39 +147,97 @@ if __name__ == '__main__':
     title('gray scale')  
     
     
-##   R domain      
-#    ing_G_R = []
-#    ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
-#    ing_G_R = ing_G_R[0] 
-#    ing_G_R = np.transpose(ing_G_R)
-#    for i in arange(len(pts)):   
+#   R domain      
+    ing_G_R = []
+    ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
+    ing_G_R = ing_G_R[0] 
+    ing_G_R = np.transpose(ing_G_R)
+    for i in arange(len(pts)):   
+        figure(2),
+        plot(arange(len(img_dir)),ing_G_R[i])        
+    figure(2), 
+    title('R domain') 
+    
+    
+#   G domain    
+    ing_G_G = []
+    ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
+    ing_G_G = ing_G_G[0]
+    ing_G_G = np.transpose(ing_G_G)
+    ing_G_B = []       
+    for i in arange(len(pts)):
+        figure(3),
+        plot(arange(len(img_dir)),ing_G_G[i])        
+    figure(3), 
+    title('G domain')
+    
+    
+#   B domain    
+    ing_G_B = []
+    ing_G_B.append(pool.map(image_processing_B,range(len(img_dir)))) 
+    ing_G_B = ing_G_B[0]
+    ing_G_B = np.transpose(ing_G_B)             
+    for i in arange(len(pts)):
+        figure(4),
+        plot(arange(len(img_dir)),ing_G_B[i])
+    figure(4), 
+    title('B domain') 
+
+## plot by point    
+# for i in arange(len(pts)):
+#    figure(i+1),
+#    plot(arange(len(img_dir)),ing_G[i],color = 'black')
+#    plot(arange(len(img_dir)),ing_G_R[i],color = 'red')
+#    plot(arange(len(img_dir)),ing_G_G[i],color = 'green')
+#    plot(arange(len(img_dir)),ing_G_B[i],color = 'blue')
+#    name = "Point " + repr(i+1)
+#    title(name)
+   
+    
+    
+    
+    
+    
+    
+## plot intergrate value subtract average value    
+#    avg = []
+#    avgR = []
+#    avgG = []
+#    avgB = []
+#    
+#    for i in arange(len(pts)):
+#        avg.append(sum(ing_G[i])/len(ing_G[i]))
+#        avgR.append(sum(ing_G_R[i])/len(ing_G_R[i]))
+#        avgG.append(sum(ing_G_G[i])/len(ing_G_G[i]))
+#        avgB.append(sum(ing_G_B[i])/len(ing_G_B[i]))
+#    
+#    
+#    
+#    
+#    
+#    
+#    
+#    for i in arange(len(pts)):
+#        figure(1),
+#        plot(arange(len(img_dir)),ing_G[i]-avg[i])        
+#    figure(1), 
+#    title('gray scale (substract avg)')
+#    
+#    for i in arange(len(pts)):
 #        figure(2),
-#        plot(arange(len(img_dir)),ing_G_R[i])        
+#        plot(arange(len(img_dir)),ing_G_R[i]-avgR[i])        
 #    figure(2), 
-#    title('R domain') 
+#    title('R domain(substract avg)')
 #    
-#    
-##   G domain    
-#    ing_G_G = []
-#    ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
-#    ing_G_G = ing_G_G[0]
-#    ing_G_G = np.transpose(ing_G_G)
-#    ing_G_B = []       
 #    for i in arange(len(pts)):
 #        figure(3),
-#        plot(arange(len(img_dir)),ing_G_G[i])        
+#        plot(arange(len(img_dir)),ing_G_G[i]-avgG[i])        
 #    figure(3), 
-#    title('G domain')
+#    title('G domain(substract avg)')
 #    
-#    
-##   B domain    
-#    ing_G_B.append(pool.map(image_processing_B,range(len(img_dir)))) 
-#    ing_G_B = ing_G_B[0]
-#    ing_G_B = np.transpose(ing_G_B)             
 #    for i in arange(len(pts)):
 #        figure(4),
-#        plot(arange(len(img_dir)),ing_G_B[i])
+#        plot(arange(len(img_dir)),ing_G_B[i]-avgB[i])        
 #    figure(4), 
-#    title('B domain')  
-    
-    
+#    title('B domain(substract avg)')
+#        

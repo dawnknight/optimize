@@ -98,19 +98,19 @@ def light_params(im,pts):
     
 if __name__ == '__main__':  
     pts = [ [1260,1605],[1305,1670],[1680,1750],[1980,1580],[2510,1535],\
-            [2505,1237],[2500,1115],[2695,1040],[3200,1350],[3615,1540]\
+            [2505,1237],[2500,1115],[2690,1035],[3200,1350],[3615,1540]\
           ]
     
-    pic_idx = 71
-    idx      = 1    
+    pic_idx = 2
+    idx      = 7    
     PTS = pts[idx]      
     
     
     path = 'C:/Users/atc327/Desktop/images_ggd/'
     img_dir = glob.glob( os.path.join(path, '*.jpg') )
     
-    im_ori = np.array(Image.open(img_dir[pic_idx]).convert('L')).astype(np.float)
-    result = light_params(im_ori,PTS)
+    im = np.array(Image.open(img_dir[pic_idx]).convert('L')).astype(np.float)
+    result = light_params(im,PTS)
     
     
     cmap = 'gist_heat'
