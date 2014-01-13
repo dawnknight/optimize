@@ -70,7 +70,7 @@ def light_params(im,pts):
         min_fval = chisq(list(k),*args)
         min_fval_params =k
         
-        niter=10
+        niter=3
         seed=314
         np.random.seed(seed)        
         #sol = np.array(k)        
@@ -129,6 +129,8 @@ def image_processing_B(img_idx):
 pts = [ [1260,1605],[1305,1670],[1680,1750],[1980,1580],[2510,1535],\
             [2505,1237],[2500,1115],[2695,1040],[3200,1350],[3615,1540]\
           ]  
+          
+
 path = 'C:/Users/atc327/Desktop/images_ggd/'
 img_dir = glob.glob( os.path.join(path, '*.jpg') )
 
@@ -136,46 +138,51 @@ if __name__ == '__main__':
     
     pool = Pool(processes=20)
     
+#   gray scale    
     ing_G = [] 
-    ing_G_R = []
-    ing_G_G = []
-    ing_G_B = []       
-     
-    ing_G.append(pool.map(image_processing,range(len(img_dir))))     
-    ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
-    ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
-    ing_G_B.append(pool.map(image_processing_B,range(len(img_dir))))
-           
-
-     
+    ing_G.append(pool.map(image_processing,range(len(img_dir))))
     ing_G = ing_G[0]
-    ing_G = np.transpose(ing_G)    
-    
-    ing_G_R = ing_G_R[0]
-    ing_G_G = ing_G_G[0]
-    ing_G_B = ing_G_B[0]
-    
-    ing_G_R = np.transpose(ing_G_R)
-    ing_G_G = np.transpose(ing_G_G)
-    ing_G_B = np.transpose(ing_G_B)
-#    
+    ing_G = np.transpose(ing_G) 
     for i in arange(len(pts)):
         figure(1),
-        plot(arange(len(img_dir)),ing_G[i])
-        figure(2),
-        plot(arange(len(img_dir)),ing_G_R[i])
-        figure(3),
-        plot(arange(len(img_dir)),ing_G_G[i])
-        figure(4),
-        plot(arange(len(img_dir)),ing_G_B[i])
-    
+        plot(arange(len(img_dir)),ing_G[i]) 
     figure(1), 
-    title('gray scale') 
-    figure(2), 
-    title('R domain')  
-    figure(3), 
-    title('G domain')  
-    figure(4), 
-    title('B domain')  
+    title('gray scale')  
+    
+    
+##   R domain      
+#    ing_G_R = []
+#    ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
+#    ing_G_R = ing_G_R[0] 
+#    ing_G_R = np.transpose(ing_G_R)
+#    for i in arange(len(pts)):   
+#        figure(2),
+#        plot(arange(len(img_dir)),ing_G_R[i])        
+#    figure(2), 
+#    title('R domain') 
+#    
+#    
+##   G domain    
+#    ing_G_G = []
+#    ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
+#    ing_G_G = ing_G_G[0]
+#    ing_G_G = np.transpose(ing_G_G)
+#    ing_G_B = []       
+#    for i in arange(len(pts)):
+#        figure(3),
+#        plot(arange(len(img_dir)),ing_G_G[i])        
+#    figure(3), 
+#    title('G domain')
+#    
+#    
+##   B domain    
+#    ing_G_B.append(pool.map(image_processing_B,range(len(img_dir)))) 
+#    ing_G_B = ing_G_B[0]
+#    ing_G_B = np.transpose(ing_G_B)             
+#    for i in arange(len(pts)):
+#        figure(4),
+#        plot(arange(len(img_dir)),ing_G_B[i])
+#    figure(4), 
+#    title('B domain')  
     
     

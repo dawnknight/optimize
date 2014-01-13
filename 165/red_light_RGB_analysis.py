@@ -42,16 +42,19 @@ if __name__ == '__main__':
         G.append(result_avg_G)
         B.append(result_avg_B)
     
+    R_T = np.transpose(R)
+    G_T = np.transpose(G)
+    B_T = np.transpose(B)
     
-    
-#    figure(1),
-#    title('R')
-#    plot(arange(len(img_dir)),R)
-#   
-#    figure(2),
-#    title('G')
-#    plot(arange(len(img_dir)),G)
-#    
-#    figure(3),
-#    title('B')
-#    plot(arange(len(img_dir)),B)
+    for idx in arange(len(pts_s)):
+        figure(1),
+        title('R')
+        plot(arange(165),R_T[idx])
+       
+        figure(2),
+        title('G')
+        plot(arange(165),G_T(idx))
+        
+        figure(3),
+        title('B')
+        plot(arange(165),B_T(idx))
