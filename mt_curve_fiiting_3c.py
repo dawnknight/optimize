@@ -201,10 +201,24 @@ if __name__ == '__main__':
 #    name = "Point " + repr(i+1)
 #    title(name)
    
-    
-    
-    
-    
+# plot  histogram by point    
+    for i in arange(len(pts)):
+        figure(i*4+1),
+        hist(ing_G[i]) 
+        name = "Point " + repr(i+1) + " gray scale" 
+        title(name)   
+        figure(i*4+1),
+        hist(ing_G_R[i]) 
+        name = "Point " + repr(i+1) + " R domain" 
+        title(name)
+        figure(i*4+1),
+        hist(ing_G_G[i]) 
+        name = "Point " + repr(i+1) + " G domain" 
+        title(name)    
+        figure(i*4+1),
+        hist(ing_G_B[i]) 
+        name = "Point " + repr(i+1) + " B domain" 
+        title(name)    
     
     
 ## plot intergrate value subtract average value    
