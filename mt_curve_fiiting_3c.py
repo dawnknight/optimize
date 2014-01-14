@@ -8,6 +8,7 @@ Created on Wed Jan 08 17:41:35 2014
 import os, glob
 import scipy as sp
 import numpy as np
+import time
 from PIL import Image
 import matplotlib.pyplot as plt
 from scipy import optimize
@@ -51,6 +52,10 @@ def Gaussian_intergate(mtx):
          C*(y_axis-ctr_y)**2-\
          D*(x_axis-ctr_x)*(y_axis-ctr_y)\
          ) + E
+         
+#    rho = (D**2./B/C/4.)**0.5
+#    sigmax = (1./2./B/(1.-rho**2))**0.5
+#    sigmay = (1./2./C/(1.-rho**2))**0.5     
     IG = sum((M-E).flatten())    
      
     return IG   
@@ -91,6 +96,8 @@ def image_processing(img_idx):
        value = Gaussian_intergate(result[idx]) 
        v_mtx.append(value/31/31)        
     return v_mtx
+       
+
 
 def image_processing_R(img_idx):
     v_mtx_R = []
@@ -100,7 +107,7 @@ def image_processing_R(img_idx):
     for idx in np.arange(len(pts)): 
        value_R = Gaussian_intergate(resultR[idx]) 
        v_mtx_R.append(value_R/31/31)        
-    return v_mtx_R
+    return v_mtx_R 
 
 def image_processing_G(img_idx):
     v_mtx_G = []
@@ -111,7 +118,8 @@ def image_processing_G(img_idx):
        value_G = Gaussian_intergate(resultG[idx]) 
        v_mtx_G.append(value_G/31/31)        
     return v_mtx_G
-    
+
+     
 def image_processing_B(img_idx):
     v_mtx_B = []
     im_ori = np.array(Image.open(img_dir[img_idx])).astype(np.float)
@@ -121,13 +129,13 @@ def image_processing_B(img_idx):
        value_B = Gaussian_intergate(resultB[idx]) 
        v_mtx_B.append(value_B/31/31)        
     return v_mtx_B
-    
+
     
 pts = [ [1260,1605],[1305,1670],[1680,1750],[1980,1580],[2510,1535],\
         [2505,1237],[2500,1115],[2690,1035],[3200,1350],[3615,1540]\
           ]  
       
-
+start_time = time.time()
 path = 'C:/Users/atc327/Desktop/images_ggd/'
 img_dir = glob.glob( os.path.join(path, '*.jpg') )
 
@@ -135,53 +143,53 @@ if __name__ == '__main__':
     
     pool = Pool(processes=20)
     
-#   gray scale    
+##   gray scale    
     ing_G = [] 
     ing_G.append(pool.map(image_processing,range(len(img_dir))))
     ing_G = ing_G[0]
-    ing_G = np.transpose(ing_G) 
-    for i in arange(len(pts)):
-        figure(1),
-        plot(arange(len(img_dir)),ing_G[i]) 
-    figure(1), 
-    title('gray scale')  
+#    ing_G = np.transpose(ing_G) 
+#    for i in arange(len(pts)):
+#        figure(1),
+#        plot(arange(len(img_dir)),ing_G[i]) 
+#    figure(1), 
+#    title('gray scale')  
     
     
-#   R domain      
+##   R domain      
     ing_G_R = []
     ing_G_R.append(pool.map(image_processing_R,range(len(img_dir))))
     ing_G_R = ing_G_R[0] 
-    ing_G_R = np.transpose(ing_G_R)
-    for i in arange(len(pts)):   
-        figure(2),
-        plot(arange(len(img_dir)),ing_G_R[i])        
-    figure(2), 
-    title('R domain') 
+#    ing_G_R = np.transpose(ing_G_R)
+#    for i in arange(len(pts)):   
+#        figure(2),
+#        plot(arange(len(img_dir)),ing_G_R[i])        
+#    figure(2), 
+#    title('R domain') 
+#    
     
-    
-#   G domain    
+##   G domain    
     ing_G_G = []
     ing_G_G.append(pool.map(image_processing_G,range(len(img_dir))))
     ing_G_G = ing_G_G[0]
-    ing_G_G = np.transpose(ing_G_G)
-    ing_G_B = []       
-    for i in arange(len(pts)):
-        figure(3),
-        plot(arange(len(img_dir)),ing_G_G[i])        
-    figure(3), 
-    title('G domain')
+#    ing_G_G = np.transpose(ing_G_G)
+#    ing_G_B = []       
+#    for i in arange(len(pts)):
+#        figure(3),
+#        plot(arange(len(img_dir)),ing_G_G[i])        
+#    figure(3), 
+#    title('G domain')
     
     
-#   B domain    
+##   B domain    
     ing_G_B = []
     ing_G_B.append(pool.map(image_processing_B,range(len(img_dir)))) 
     ing_G_B = ing_G_B[0]
-    ing_G_B = np.transpose(ing_G_B)             
-    for i in arange(len(pts)):
-        figure(4),
-        plot(arange(len(img_dir)),ing_G_B[i])
-    figure(4), 
-    title('B domain') 
+#    ing_G_B = np.transpose(ing_G_B)             
+#    for i in arange(len(pts)):
+#        figure(4),
+#        plot(arange(len(img_dir)),ing_G_B[i])
+#    figure(4), 
+#    title('B domain') 
 
 ## plot by point    
 # for i in arange(len(pts)):
@@ -240,4 +248,63 @@ if __name__ == '__main__':
 #        plot(arange(len(img_dir)),ing_G_B[i]-avgB[i])        
 #    figure(4), 
 #    title('B domain(substract avg)')
-#        
+#      
+    
+## plot sigma X sigma Y Rho    
+#    figure(1),
+#    sigx_g = [row[0][1] for row in ing_G]
+#    sigx_R = [row[0][1] for row in ing_G_R]
+#    sigx_G = [row[0][1] for row in ing_G_G]
+#    sigx_B = [row[0][1] for row in ing_G_B]
+#    plot(arange(len(img_dir)),sigx_g,color = 'black')
+#    plot(arange(len(img_dir)),sigx_R,color = 'red')
+#    plot(arange(len(img_dir)),sigx_G,color = 'green')
+#    plot(arange(len(img_dir)),sigx_B,color = 'blue')
+#    title('sigma X')
+#    
+#    figure(2),
+#    sigy_g = [row[0][2] for row in ing_G]
+#    sigy_R = [row[0][2] for row in ing_G_R]
+#    sigy_G = [row[0][2] for row in ing_G_G]
+#    sigy_B = [row[0][2] for row in ing_G_B]
+#    plot(arange(len(img_dir)),sigy_g,color = 'black')
+#    plot(arange(len(img_dir)),sigy_R,color = 'red')
+#    plot(arange(len(img_dir)),sigy_G,color = 'green')
+#    plot(arange(len(img_dir)),sigy_B,color = 'blue')
+#    title('sigma Y')
+#    
+#    
+#    figure(3),
+#    rho_g = [row[0][0] for row in ing_G]
+#    rho_R = [row[0][0] for row in ing_G_R]
+#    rho_G = [row[0][0] for row in ing_G_G]
+#    rho_B = [row[0][0] for row in ing_G_B]
+#    plot(arange(len(img_dir)),rho_g,color = 'black')
+#    plot(arange(len(img_dir)),rho_R,color = 'red')
+#    plot(arange(len(img_dir)),rho_G,color = 'green')
+#    plot(arange(len(img_dir)),rho_B,color = 'blue')
+#    title('Rho')
+#    
+#    
+#    figure(4),
+#    sigx_g = [row[0][1] for row in ing_G]
+#    sigx_R = [row[0][1] for row in ing_G_R]
+#    sigx_G = [row[0][1] for row in ing_G_G]
+#    sigx_B = [row[0][1] for row in ing_G_B]
+#    plot(arange(len(img_dir)),sigx_g/sigx_g[0],color = 'black')
+#    plot(arange(len(img_dir)),sigx_R/sigx_R[0],color = 'red')
+#    plot(arange(len(img_dir)),sigx_G/sigx_G[0],color = 'green')
+#    plot(arange(len(img_dir)),sigx_B/sigx_B[0],color = 'blue')
+#    title('ratio sigma X/sigma X0')
+#    
+#    figure(5),
+#    sigy_g = [row[0][2] for row in ing_G]
+#    sigy_R = [row[0][2] for row in ing_G_R]
+#    sigy_G = [row[0][2] for row in ing_G_G]
+#    sigy_B = [row[0][2] for row in ing_G_B]
+#    plot(arange(len(img_dir)),sigy_g/sigy_g[0],color = 'black')
+#    plot(arange(len(img_dir)),sigy_R/sigy_R[0],color = 'red')
+#    plot(arange(len(img_dir)),sigy_G/sigy_G[0],color = 'green')
+#    plot(arange(len(img_dir)),sigy_B/sigy_B[0],color = 'blue')
+#    title('ratio sigma Y/sigma Y0')
+    

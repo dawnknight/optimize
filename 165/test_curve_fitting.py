@@ -25,9 +25,9 @@ def chisq(x,*args):
     D = x[3] # D = -lo/((1-rho^2)*sigma_x*sigma_y)   rho>0 => D<0 , rho<0 => D>0
     E = x[4]
      
-    rho_s = D**2/B/C/4
-    sigmax_s = 1/2/B/(1-rho_s)
-    sigmay_s = 1/2/C/(1-rho_s)
+    rho_s = D**2./B/C/4.
+    sigmax_s = 1./2./B/(1.-rho_s)
+    sigmay_s = 1./2./C/(1.-rho_s)
     
 #    print B,sigmax_s,C,sigmay_s,D,rho_s     
     
