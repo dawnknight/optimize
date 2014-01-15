@@ -201,26 +201,106 @@ if __name__ == '__main__':
 #    name = "Point " + repr(i+1)
 #    title(name)
    
-# plot  histogram by point    
-    for i in arange(len(pts)):
-        figure(i*4+1),
-        hist(ing_G[i]) 
-        name = "Point " + repr(i+1) + " gray scale" 
-        title(name)   
-        figure(i*4+1),
-        hist(ing_G_R[i]) 
-        name = "Point " + repr(i+1) + " R domain" 
-        title(name)
-        figure(i*4+1),
-        hist(ing_G_G[i]) 
-        name = "Point " + repr(i+1) + " G domain" 
-        title(name)    
-        figure(i*4+1),
-        hist(ing_G_B[i]) 
-        name = "Point " + repr(i+1) + " B domain" 
-        title(name)    
+## plot  histogram by point    
+#    for i in arange(len(pts)):
+#        figure(i*4+1),
+#        hist(ing_G[i]) 
+#        name = "Point " + repr(i+1) + " gray scale" 
+#        title(name)   
+#        figure(i*4+1),
+#        hist(ing_G_R[i]) 
+#        name = "Point " + repr(i+1) + " R domain" 
+#        title(name)
+#        figure(i*4+1),
+#        hist(ing_G_G[i]) 
+#        name = "Point " + repr(i+1) + " G domain" 
+#        title(name)    
+#        figure(i*4+1),
+#        hist(ing_G_B[i]) 
+#        name = "Point " + repr(i+1) + " B domain" 
+#        title(name)    
+#plot means and variance for every N images
+N = 5;
+all_gray_avg = []
+all_r_avg = []
+all_g_avg = []
+all_b_avg =[]
+all_gray_va = []
+all_r_va = []
+all_g_va = []
+all_b_va =[]
+for j in arange(len(pts)):
+    gray_avg = []
+    r_avg = []
+    g_avg = []
+    b_avg =[]
+    gray_va = []
+    r_va = []
+    g_va = []
+    b_va =[]
+    for i in arange(int(len(img_dir)/N)):
+        gray_avg.append(ing_G[j][i*N:(i+1)*N].mean())    
+        r_avg.append(ing_G_R[j][i*N:(i+1)*N].mean())
+        g_avg.append(ing_G_G[j][i*N:(i+1)*N].mean())
+        b_avg.append(ing_G_B[j][i*N:(i+1)*N].mean())
+        gray_va.append(ing_G[j][i*N:(i+1)*N].var())    
+        r_va.append(ing_G_R[j][i*N:(i+1)*N].var())
+        g_va.append(ing_G_G[j][i*N:(i+1)*N].var())
+        b_va.append(ing_G_B[j][i*N:(i+1)*N].var())
+        
+    all_gray_avg.append(gray_avg)    
+    all_r_avg.append(r_avg)
+    all_g_avg.append(g_avg)
+    all_b_avg.append(b_avg)
+    all_gray_va.append(gray_va)    
+    all_r_va.append(r_va)
+    all_g_va.append(g_va)
+    all_b_va.append(b_va)             
+
+for i in arange(len(pts)):
+    figure(1),
+    plot(arange(int(len(img_dir)/N)),all_gray_avg[i]) 
+    figure(2),
+    plot(arange(int(len(img_dir)/N)),all_r_avg[i]) 
+    figure(3),
+    plot(arange(int(len(img_dir)/N)),all_g_avg[i]) 
+    figure(4),
+    plot(arange(int(len(img_dir)/N)),all_b_avg[i])
+    figure(5)
+    plot(arange(int(len(img_dir)/N)),all_gray_va[i]) 
+    figure(6)
+    plot(arange(int(len(img_dir)/N)),all_r_va[i]) 
+    figure(7)
+    plot(arange(int(len(img_dir)/N)),all_g_va[i]) 
+    figure(8)
+    plot(arange(int(len(img_dir)/N)),all_b_va[i]) 
     
-    
+figure(1),    
+name_avg ='Mean in gray scale (every'+ repr(N) +' images)' 
+title(name_avg)    
+figure(2),    
+name_avg ='Mean in red domain (every'+ repr(N) +' images)' 
+title(name_avg)
+figure(3),    
+name_avg ='Mean in green domain (every'+ repr(N) +' images)' 
+title(name_avg)
+figure(4),    
+name_avg ='Mean in blue domain (every'+ repr(N) +' images)' 
+title(name_avg)
+
+figure(5),    
+name_va ='Variance in gray scale (every'+ repr(N) +' images)' 
+title(name_va)    
+figure(6),    
+name_va ='Variance in red domain (every'+ repr(N) +' images)' 
+title(name_va)
+figure(7),    
+name_va ='Variance in green domain (every'+ repr(N) +' images)' 
+title(name_va)
+figure(8),    
+name_va ='Variance in blue domain (every'+ repr(N) +' images)' 
+title(name_va)
+  
 ## plot intergrate value subtract average value    
 #    avg = []
 #    avgR = []
