@@ -67,25 +67,25 @@ B_T = np.transpose(B)
 cmap = 'gist_heat'
 interp = 'nearest'
 clim = [-255,255]
-path = os.environ['DST_WRITE']
+savepath = os.environ['DST_WRITE']
 nameR= 'R.png'
 nameG= 'G.png'
 nameB= 'B.png'
 
 for idx in arange(len(pts)):   
-    plot(arange(len(path)),R_T[idx])
+    plot(arange(len(paths)),R_T[idx])
 title('R')
-plt.savefig(os.path.join(path,nameR),clobber=True)
+plt.savefig(os.path.join(savepath,nameR),clobber=True)
 plt.close()
 
 for idx in arange(len(pts)):       
-    plot(arange(len(path)),G_T(idx))
+    plot(arange(len(paths)),G_T(idx))
 title('G') 
-plt.savefig(os.path.join(path,nameG),clobber=True) 
+plt.savefig(os.path.join(savepath,nameG),clobber=True) 
 plt.close()  
 
 for idx in arange(len(pts)):          
-    plot(arange(len(path)),B_T(idx))
+    plot(arange(len(paths)),B_T(idx))
 title('B')    
-plt.savefig(os.path.join(path,nameB),clobber=True)
+plt.savefig(os.path.join(savepath,nameB),clobber=True)
 plt.close()
