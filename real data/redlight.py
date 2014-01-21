@@ -72,20 +72,21 @@ nameR= 'R.png'
 nameG= 'G.png'
 nameB= 'B.png'
 
+figure(1),
+title('R')
 for idx in arange(len(pts)):   
     plot(arange(len(paths)),R_T[idx])
-title('R')
 plt.savefig(os.path.join(savepath,nameR),clobber=True)
 plt.close()
-
-for idx in arange(len(pts)):       
-    plot(arange(len(paths)),G_T(idx))
+figure(2),
 title('G') 
+for idx in arange(len(pts)):       
+    plot(arange(len(paths)),G_T[idx])
 plt.savefig(os.path.join(savepath,nameG),clobber=True) 
 plt.close()  
-
+figure(3),
+title('B') 
 for idx in arange(len(pts)):          
-    plot(arange(len(paths)),B_T(idx))
-title('B')    
+    plot(arange(len(paths)),B_T[idx])   
 plt.savefig(os.path.join(savepath,nameB),clobber=True)
 plt.close()
